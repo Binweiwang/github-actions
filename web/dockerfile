@@ -1,0 +1,13 @@
+# Se utiliza la imagen de nginx con la versión 1.25.3 y alpine 3.18
+FROM nginx:1.25.3-alpine3.18
+# Se elimina el contenido predeterminado de nginx
+RUN rm -rf /usr/share/nginx/html/*
+
+# Se copian todos los archivos HTML, CSS y JS al contenedor
+COPY ./src/index.js /usr/share/nginx/html/
+
+# Se expone el puerto 80
+EXPOSE 80
+
+# Comando para iniciar nginx
+CMD ["nginx", "-g", "daemon off;"]

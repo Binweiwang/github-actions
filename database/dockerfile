@@ -1,0 +1,8 @@
+# Se utiliza la imagen de mongo con la versión 4.4.9
+FROM mongo:4.4.9
+# Se copia el archivo init.js al directorio de trabajo
+RUN apt-get update && apt-get upgrade -y && apt-get clean
+# # Se crea el directorio de trabajo
+# COPY init.js /docker-entrypoint-initdb.d/
+# Se expone el puerto 27017
+EXPOSE 27017

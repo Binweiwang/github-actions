@@ -1,23 +1,44 @@
-version: '3.8'
-
 services:
   database:
-    container_name: database
-    image: mongo:7.0.5
-    restart: unless-stopped
-    env_file: .env
+    build:
+      context: ./database
+      dockerfile: Dockerfile
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE
     ports:
-      - "${MONGO_PORT}:27017"
+      - "27017:27017"
     volumes:
-      - ./database:/data/db
+      - ./database/data:/data/db
     networks:
-      - network-despliegue
+      - tareasApp
+    container_name: mongo-db
+
+  api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    networks:
+      - tareasApp
+    container_name: app-node
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    networks:
+      - tareasApp
+    container_name: web-client
+
 networks:
-  network-despliegue:
+  tareasApp:
     driver: bridge
-volumes:
-  database:
