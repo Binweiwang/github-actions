@@ -20,3 +20,9 @@ C
 web/dockerfile,2\6\26ca0ee6b8175b6067c2264c1b728603475e7201
 =
 app/readme.md,1\8\18ebc69a696e3b5912a9beebd6888bce9004d54e
+<
+package.json,7\0\7030d0b2f71b999ff89a343de08c414af32fc93a
+@
+app/package.json,6\4\64d8ff0a7258a7708d2e31553cb19915ba2dc051
+<
+CHANGELOG.md,a\b\ab09011fa121d0a2bb9fa4ca76094f2482b902b7
