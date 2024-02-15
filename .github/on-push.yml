@@ -1,0 +1,50 @@
+on-push.yml
+
+----------------
+
+name: Update Changelog
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+        with:
+          persist-credentials: false
+          token: ${{ secrets.TOKEN }}
+
+      - name: Change to project directory
+        run: cd .
+
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Add changes to Changelog
+        run: |
+          CURRENT_DATE=$(date +'%Y-%m-%d %H:%M:%S')
+          echo "### $CURRENT_DATE" >> CHANGELOG.md
+          git log --format="- %s" -1 >> CHANGELOG.md
+
+      - name: Commit changes
+        run: |
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add CHANGELOG.md
+            git commit -m "Update changelog [skip ci]"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+            github_token: ${{ secrets.TOKEN }}
